@@ -1,11 +1,10 @@
-import Image from 'next/image'
-
-import SpinningAsciiImage from '../components/spinning_ascii_image'
+import data from './api/frames.json'
+import SpinningAsciiImage from './components/spinning_ascii_image'
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col justify-center items-center">
-      <SpinningAsciiImage image="🌎" />
+      <SpinningAsciiImage frames={data.frames} />
     </main>
   )
 }
