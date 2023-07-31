@@ -52,15 +52,15 @@ async fn axum(
 ) -> shuttle_axum::ShuttleAxum {
     let app = Router::new()
         .merge(routes_upload())
-        .fallback_service(routes_static(static_folder));
+        .fallback_service(routes_static(PathBuf::from(format!("{}/{}", static_folder.display(), "frames.json"))));
 
     Ok(app.into())
 }
 
 fn routes_upload() -> Router {
-    Router::new().route("/", post(upload))
+    Router::new().route("/upload", post(upload))
 }
 
 fn routes_static(static_folder: PathBuf) -> Router {
-    Router::new().nest_service("/assets", get_service(ServeDir::new(static_folder)))
+    Router::new().nest_service("/", get_service(ServeDir::new(static_folder)))
 }
