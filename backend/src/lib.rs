@@ -25,11 +25,6 @@ struct Frames {
 /// 
 /// # Example
 /// 
-/// ```
-/// let matrix = vec![vec!['a', 'b', 'c'], vec!['d', 'e', 'f']];
-/// let json = run_json(matrix);
-/// ```
-/// 
 /// # Errors
 /// 
 /// * If the JSON serialization fails
