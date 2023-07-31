@@ -97,13 +97,6 @@ fn create_frames(matrix: Vec<Vec<char>>) -> Frames {
 /// 
 /// * A 2D vector of characters representing the image
 /// 
-/// # Example
-/// 
-/// ```
-/// let img = image::open("image.png")?.into_luma8();
-/// let matrix = pixels_to_ascii(img, 10);
-/// ```
-/// 
 /// # Errors
 /// 
 /// * if the offset fails to convert to usize
