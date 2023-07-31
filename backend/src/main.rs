@@ -62,5 +62,5 @@ fn routes_upload() -> Router {
 }
 
 fn routes_static(static_folder: PathBuf) -> Router {
-    Router::new().nest_service("/assets", get_service(static_folder))
+    Router::new().nest_service("/assets", get_service(ServeDir::new(static_folder)))
 }

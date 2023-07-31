@@ -1747,23 +1747,6 @@ dependencies = [
 
 [[package]]
 name = "shuttle-common"
-version = "0.21.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b29e408d7654c735ede8554fdda69c516c8f04af43297e5cf50b831d8a0d7dce"
-dependencies = [
- "anyhow",
- "chrono",
- "once_cell",
- "rustrict",
- "serde",
- "serde_json",
- "strum",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "shuttle-common"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "26a36d3fc4ec9abe5d5b9f8d2698e248caf095fa6ad5bb3d6bcf9227515d4e78"
@@ -1811,7 +1794,7 @@ dependencies = [
  "home",
  "prost",
  "prost-types",
- "shuttle-common 0.22.0",
+ "shuttle-common",
  "tokio",
  "tonic",
  "tower",
@@ -1831,9 +1814,9 @@ dependencies = [
  "serde",
  "serde_json",
  "shuttle-codegen",
- "shuttle-common 0.22.0",
+ "shuttle-common",
  "shuttle-proto",
- "shuttle-service 0.22.0",
+ "shuttle-service",
  "strfmt",
  "thiserror",
  "tokio",
@@ -1846,20 +1829,6 @@ dependencies = [
 
 [[package]]
 name = "shuttle-service"
-version = "0.21.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eb9157726451489c43ac5d07d0813f3b39863cbcc778615a2f5daa9766a2bb15"
-dependencies = [
- "anyhow",
- "async-trait",
- "serde",
- "shuttle-common 0.21.0",
- "strfmt",
- "thiserror",
-]
-
-[[package]]
-name = "shuttle-service"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "beca267cd66915c6b24467f4a6cf65cba082dd1170708a3f14cd75c7a8474469"
@@ -1867,22 +1836,22 @@ dependencies = [
  "anyhow",
  "async-trait",
  "serde",
- "shuttle-common 0.22.0",
+ "shuttle-common",
  "strfmt",
  "thiserror",
 ]
 
 [[package]]
 name = "shuttle-static-folder"
-version = "0.21.0"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ee4441bd2ba9bf6b86e7051b3c11b593aa0d81c1e2fab1be7a8c9e8954eedd4"
+checksum = "85030a1fa4137d4d9f8f463f1d26d86fd1303455036a594de076b58a636cae33"
 dependencies = [
  "async-trait",
  "dunce",
  "fs_extra",
  "serde",
- "shuttle-service 0.21.0",
+ "shuttle-service",
  "tracing",
 ]
 
