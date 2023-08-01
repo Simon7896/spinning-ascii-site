@@ -12,6 +12,7 @@ use axum::routing::get_service;
 use serde_json::{Value, json};
 use tower_http::services::ServeDir;
 use spinning_ascii::run_json;
+use tracing::info;
 
 #[derive(TryFromMultipart)]
 struct RequestData {
@@ -23,7 +24,7 @@ async fn upload(
 ) -> Result<Json<Value>, (StatusCode, String)> {
 
 
-    println!(
+    info!(
         "file name = '{}', content type = '{}', size = '{}'",
         image.metadata.file_name.unwrap_or(String::new()),
         image.metadata.content_type.clone().unwrap_or(String::from("text/plain")),

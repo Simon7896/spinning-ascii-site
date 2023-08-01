@@ -15,3 +15,5 @@ shuttle-runtime = "0.22.0"
 shuttle-static-folder = "0.22.0"
 tokio = "1.28.2"
 tower-http = { version = "0.4.3", features = ["fs"] }
+tracing = "0.1.37"
+

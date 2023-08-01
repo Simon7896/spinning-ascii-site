@@ -1936,6 +1936,7 @@ dependencies = [
  "shuttle-static-folder",
  "tokio",
  "tower-http",
+ "tracing",
 ]
 
 [[package]]
