@@ -23,7 +23,6 @@ async fn upload(
     TypedMultipart(RequestData { image }): TypedMultipart<RequestData>,
 ) -> Result<Json<Value>, (StatusCode, String)> {
 
-
     info!(
         "file name = '{}', content type = '{}', size = '{}'",
         image.metadata.file_name.unwrap_or(String::new()),
@@ -42,7 +41,6 @@ async fn upload(
         println!("Error: {}", err);
         (StatusCode::BAD_REQUEST, "Error loading image".to_string())
     })?.to_luma8();
-
 
     Ok(Json(json!(run_json(spinning_ascii::pixels_to_ascii(image_buffer, 20).unwrap()).unwrap().as_str())))
 }
