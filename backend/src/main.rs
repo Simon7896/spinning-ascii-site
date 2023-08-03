@@ -9,9 +9,8 @@ use axum::{
 };
 use axum_typed_multipart::{TryFromMultipart, TypedMultipart, FieldData};
 use axum::routing::get_service;
-use serde_json::{Value, json};
 use tower_http::services::ServeDir;
-use spinning_ascii::run_json;
+use spinning_ascii::{create_frames, pixels_to_ascii, Frames};
 use tracing::info;
 
 #[derive(TryFromMultipart)]
@@ -21,7 +20,7 @@ struct RequestData {
 
 async fn upload(
     TypedMultipart(RequestData { image }): TypedMultipart<RequestData>,
-) -> Result<Json<Value>, (StatusCode, String)> {
+) -> Result<Json<Frames>, (StatusCode, String)> {
 
     info!(
         "file name = '{}', content type = '{}', size = '{}'",
@@ -42,7 +41,7 @@ async fn upload(
         (StatusCode::BAD_REQUEST, "Error loading image".to_string())
     })?.to_luma8();
 
-    Ok(Json(json!(run_json(spinning_ascii::pixels_to_ascii(image_buffer, 20).unwrap()).unwrap().as_str())))
+    Ok(Json(create_frames(pixels_to_ascii(image_buffer, 20).unwrap()).unwrap()))
 }
 
 #[shuttle_runtime::main]
