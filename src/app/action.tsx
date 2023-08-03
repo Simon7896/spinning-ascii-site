@@ -9,6 +9,7 @@ export default async function processImage(data: FormData) {
   const res = await fetch("https://spinning-ascii.shuttleapp.rs/upload", { 
     method: "POST",
     body: data,
+    next: { revalidate: 60 }
   });
 
   if (!res.ok) {
