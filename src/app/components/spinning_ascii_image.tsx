@@ -16,9 +16,8 @@ const SpinnningAsciiImage = (props: { frames: {matrix: string[][]; frame_number:
                 }
             );
         }, duration);
-
         return () => clearInterval(interval);
-    });
+    }, []);
 
     return (
         <div className="flex flex-col justify-center items-center">
