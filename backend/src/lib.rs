@@ -13,28 +13,8 @@ pub struct Frames {
     frames: Vec<Frame>,
 }
 
-/// Constructs a JSON literal string containing each frame of the spinning animation
-/// 
-/// # Arguments
-/// 
-/// * `matrix` - A 2D vector of characters representing the image
-/// 
-/// # Returns
-/// 
-/// * A JSON string containing the frames of the animation
-/// 
-/// # Example
-/// 
-/// # Errors
-/// 
-/// * If the JSON serialization fails
-pub fn run_json(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>>{
-    let frames = create_frames(matrix.clone());
-    return Ok(frames);
-}
-
 /// Converts an image into a 2D vector of characters
-fn create_frames(matrix: Vec<Vec<char>>) -> Frames {
+pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
     let mut frames: Vec<Frame> = Vec::new();
 
     let mut rad_angle:f32 = 0.0;
@@ -78,7 +58,7 @@ fn create_frames(matrix: Vec<Vec<char>>) -> Frames {
         rad_angle += 0.1;
     }
 
-    return Frames { frames };
+    return Ok(Frames { frames });
 }
 
 /// Converts an image into a 2D vector of characters
