@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 
 import SpinningAsciiImage from './components/spinning_ascii_image'
 import UploadForm from './components/uploadForm';
@@ -8,11 +8,17 @@ import json_data from './api/frames.json';
 import processImage from './action';
 
 const Home = () => {
+  const initialRender = useRef(true);
   const [isPending, startTransition] = useTransition();
   const [frames_data, setFramesData] = useState(json_data.frames);
   const [formData, setFormData] = useState(new FormData(undefined));
 
   useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+
     startTransition(() => {
       processImage(formData).then(
         (json) => { 
@@ -20,7 +26,7 @@ const Home = () => {
           setFramesData(json.frames);
         },
         (reason) => { 
-          console.warn(reason) 
+          console.error(reason) 
           console.log("Returning default JSON!");
         }
       )
