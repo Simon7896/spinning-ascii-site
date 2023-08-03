@@ -3,13 +3,13 @@ use std::{f32::consts::PI, error::Error};
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Frame {
+pub struct Frame {
     matrix: Vec<Vec<char>>,
     frame_number: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Frames {
+pub struct Frames {
     frames: Vec<Frame>,
 }
 
@@ -28,9 +28,9 @@ struct Frames {
 /// # Errors
 /// 
 /// * If the JSON serialization fails
-pub fn run_json(matrix: Vec<Vec<char>>) -> Result<String, Box<dyn Error>>{
+pub fn run_json(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>>{
     let frames = create_frames(matrix.clone());
-    return Ok(serde_json::to_string( &frames)?);
+    return Ok(frames);
 }
 
 /// Converts an image into a 2D vector of characters
