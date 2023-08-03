@@ -31,8 +31,8 @@ pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
         amount which will be cut off by each rotation. This is done 
         by finding the offset of the image from the top left corner.
     */
-    let hypotenuse = (matrix.len().pow(2) + matrix[0].len().pow(2)) as f32;
-    let (x_offset, y_offset) = (hypotenuse-matrix[0].len()/2, hypotenuse-matrix.len()/2);    
+    let hypotenuse = ((matrix.len().pow(2) + matrix[0].len().pow(2)) as f32).sqrt();
+    let (x_offset, y_offset) = (hypotenuse-(matrix[0].len() as f32/2.0), hypotenuse-(matrix.len() as f32/2.0));    
 
     let mut rad_angle:f32 = 0.0; // current angle in radians
     let mut frame_count: u32 = 0; // current frame number
@@ -42,7 +42,7 @@ pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
 
         // Create a new frame
         let mut frame = Frame {
-            matrix: vec![vec!['#'; hypotenuse]; hypotenuse],
+            matrix: vec![vec!['#'; hypotenuse as usize]; hypotenuse as usize],
             frame_number: frame_count,
         };
 
@@ -64,7 +64,7 @@ pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
 
                 // Add the character to the frame if it is within the bounds of the frame
                 if x >= 0.0 && y >= 0.0 && x < matrix[0].len() as f32 && y < matrix.len() as f32 {
-                    frame.matrix[y+y_offset as usize][x+x_offset as usize] = *c;
+                    frame.matrix[(y+y_offset) as usize][(x+x_offset) as usize] = *c;
                 }
             }
         }
