@@ -13,19 +13,36 @@ pub struct Frames {
     frames: Vec<Frame>,
 }
 
-/// Converts an image into a 2D vector of characters
+/// Creates a vector of frames from a 2D vector of characters
+/// 
+/// # Arguments
+/// 
+/// * `matrix` - A 2D vector of characters representing the image
+/// 
+/// # Returns
+/// 
+/// * A vector of frames
 pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
-    let mut frames: Vec<Frame> = Vec::new();
+    let mut frames: Vec<Frame> = Vec::new(); // create object to store frames
 
-    let mut rad_angle:f32 = 0.0;
-    let mut frame_count: u32 = 0;
-    let (x_center, y_center) = (matrix[0].len()/2, matrix.len()/2);
+    /*
+        The following two lines are used to center the frame image,
+        since the frame is larger than the image to account for the 
+        amount which will be cut off by each rotation. This is done 
+        by finding the offset of the image from the top left corner.
+    */
+    let hypotenuse = (matrix.len().pow(2) + matrix[0].len().pow(2)) as f32;
+    let (x_offset, y_offset) = (hypotenuse-matrix[0].len()/2, hypotenuse-matrix.len()/2);    
+
+    let mut rad_angle:f32 = 0.0; // current angle in radians
+    let mut frame_count: u32 = 0; // current frame number
+    let (x_center, y_center) = (matrix[0].len()/2, matrix.len()/2); // center of the image
 
     while rad_angle < 2.0*PI {
 
         // Create a new frame
         let mut frame = Frame {
-            matrix: vec![vec![' '; matrix[0].len()]; matrix.len()],
+            matrix: vec![vec!['#'; hypotenuse]; hypotenuse],
             frame_number: frame_count,
         };
 
@@ -47,7 +64,7 @@ pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
 
                 // Add the character to the frame if it is within the bounds of the frame
                 if x >= 0.0 && y >= 0.0 && x < matrix[0].len() as f32 && y < matrix.len() as f32 {
-                    frame.matrix[y as usize][x as usize] = *c;
+                    frame.matrix[y+y_offset as usize][x+x_offset as usize] = *c;
                 }
             }
         }
