@@ -56,7 +56,11 @@ async fn axum(
 }
 
 fn routes_upload() -> Router {
-    Router::new().route("/upload", post(upload))
+    Router::new()
+        .route("/upload/clockwise", post(upload))
+        .route("/upload/counterclockwise", post(upload))
+        .route("upload/shiftleft", post(upload))
+        .route("upload/shiftright", post(upload))
 }
 
 fn routes_static(static_folder: PathBuf) -> Router {
