@@ -16,5 +16,5 @@ export default async function processImage(data: FormData) {
     throw new Error("Failed to fetch frames");
   }
 
-  return await JSON.parse(await res.json());
+  return await await res.json();
 }
