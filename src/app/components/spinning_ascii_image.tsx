@@ -16,15 +16,22 @@ const SpinnningAsciiImage = (props: { frames: {matrix: string[][]; frame_number:
                 }
             );
         }, duration);
-
         return () => clearInterval(interval);
-    });
+    }, []);
 
     return (
-        <div className="flex flex-col justify-center items-center">
-            { props.frames[frameIndex].matrix.map((row, row_index) => {
+        <div className="leading-none flex flex-col">
+            {props.frames[frameIndex].matrix.map((row, rowIndex) => {
                 return (
-                    <div key={frameIndex+row_index}>{ row }</div>
+                    <div key={rowIndex} className="flex">
+                        {row.map((char, charIndex) => {
+                            return (
+                                <div key={charIndex} className="w-4 h-4">
+                                    {char}
+                                </div>
+                            )
+                        })}
+                    </div>
                 )
             })}
         </div>
