@@ -6,7 +6,9 @@ export default async function processImage(data: FormData) {
     throw new Error("No image selected");
   }
 
-  const res = await fetch("https://spinning-ascii.shuttleapp.rs/upload", { 
+  data.append("animation_type", "rotate-cw");
+
+  const res = await fetch("https://spinning-ascii.shuttleapp.rs/api", {
     method: "POST",
     body: data,
     cache: "no-store",
