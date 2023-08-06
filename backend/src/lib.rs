@@ -13,7 +13,8 @@ pub struct Frames {
     frames: Vec<Frame>,
 }
 
-/// Creates a vector of frames from a 2D vector of characters
+/// Creates a vector of frames from a 2D vector of ascii characters,
+/// which form a clockwise rotating animation
 /// 
 /// # Arguments
 /// 
@@ -22,7 +23,7 @@ pub struct Frames {
 /// # Returns
 /// 
 /// * A vector of frames
-pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
+pub fn create_rotate_cw_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
     let mut frames: Vec<Frame> = Vec::new(); // create object to store frames
 
     /*
@@ -70,6 +71,145 @@ pub fn create_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
         frames.push(frame);
         frame_count += 1;
         rad_angle += 0.1;
+    }
+
+    return Ok(Frames { frames });
+}
+
+/// Creates a vector of frames from a 2D vector of ascii characters,
+/// which form a counter-clockwise rotating animation
+/// 
+/// # Arguments
+/// 
+/// * `matrix` - A 2D vector of characters representing the image
+/// 
+/// # Returns
+/// 
+/// * A vector of frames
+pub fn create_rotate_ccw_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
+    let mut frames: Vec<Frame> = Vec::new(); // create object to store frames
+
+    /*
+        The following two lines are used to center the frame image,
+        since the frame is larger than the image to account for the 
+        amount which will be cut off by each rotation. This is done 
+        by finding the offset of the image from the top left corner.
+    */
+    let hypotenuse = ((matrix.len().pow(2) + matrix[0].len().pow(2)) as f32).sqrt().ceil();
+    let (x_offset, y_offset) = ((hypotenuse-matrix[0].len() as f32)/2.0, (hypotenuse-matrix.len() as f32)/2.0);    
+
+    let mut rad_angle:f32 = 2.0*PI; // current angle in radians
+    let mut frame_count: u32 = 0; // current frame number
+    let (x_center, y_center) = (matrix[0].len()/2, matrix.len()/2); // center of the image
+
+    while rad_angle > 0.0 {
+
+        // Create a new frame
+        let mut frame = Frame {
+            matrix: vec![vec![' '; hypotenuse as usize]; hypotenuse as usize],
+            frame_number: frame_count,
+        };
+
+        // Rotate the matrix by the current angle
+        for (i, row) in matrix.iter().enumerate() {
+            for (j, c) in row.iter().enumerate() {
+
+                let (sina, cosa) = rad_angle.sin_cos(); // Rotation matrix coefficients
+
+                let (x_t, y_t) = (  // Translation matrix coefficients
+                    j as f32 - x_center as f32, 
+                    i as f32 - y_center as f32
+                );
+
+                let (x,y) = ( // Apply rotation and translation
+                    (x_t*cosa+y_t*sina)+x_center as f32, 
+                    (x_t*sina-y_t*cosa)+y_center as f32
+                );
+
+                frame.matrix[(y+y_offset) as usize][(x+x_offset) as usize] = *c;
+            }
+        }
+
+        // Add the frame to the vector of frames
+        frames.push(frame);
+        frame_count += 1;
+        rad_angle -= 0.1;
+    }
+
+    return Ok(Frames { frames });
+}
+
+/// Creates a vector of frames from a 2D vector of ascii characters,
+/// which form a scrolling animation from left to right
+/// 
+/// # Arguments
+/// 
+/// * `matrix` - A 2D vector of characters representing the image
+/// 
+/// # Returns
+/// 
+/// * A vector of frames
+pub fn create_shift_left_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
+    let mut frames: Vec<Frame> = Vec::new(); // create object to store frames
+    let mut frame_count: u32 = 0; // current frame number
+
+    let width = matrix[0].len(); // width of the image
+    
+    while frame_count < width as u32 {
+
+        let mut temp_matrix = matrix.clone(); // create a copy of the matrix 
+
+        for element in temp_matrix.iter_mut() {
+            element.rotate_left(frame_count as usize)
+        }; // create a copy of the matrix
+
+        // Create a new frame
+        let frame = Frame {
+            matrix: temp_matrix,
+            frame_number: frame_count,
+        };
+
+        // Add the frame to the vector of frames
+        frames.push(frame);
+        frame_count += 1;
+    }
+
+    return Ok(Frames { frames });
+}
+
+/// Creates a vector of frames from a 2D vector of ascii characters,
+/// which form a scrolling animation from left to right
+/// 
+/// # Arguments
+/// 
+/// * `matrix` - A 2D vector of characters representing the image
+/// 
+/// # Returns
+/// 
+/// * A vector of frames
+pub fn create_shift_right_frames(matrix: Vec<Vec<char>>) -> Result<Frames, Box<dyn Error>> {
+    let mut frames: Vec<Frame> = Vec::new(); // create object to store frames
+    let mut frame_count: u32 = 0; // current frame number
+
+    let width = matrix[0].len(); // width of the image
+    
+    while frame_count < width as u32 {
+
+        let mut temp_matrix = matrix.clone(); // create a copy of the matrix 
+
+        for element in temp_matrix.iter_mut() {
+            element.rotate_right(frame_count as usize)
+        }; // create a copy of the matrix
+
+        // Create a new frame
+        let frame = Frame {
+            matrix: temp_matrix,
+            frame_number: frame_count,
+        };
+
+        // Add the frame to the vector of frames
+        frames.push(frame);
+        frame_count += 1;
     }
 
     return Ok(Frames { frames });
