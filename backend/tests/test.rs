@@ -19,10 +19,11 @@ async fn test1() -> Result<(), anyhow::Error> {
     file.read_to_end(&mut contents).await?;
 
     let form = Form::new()
+        .part("animation_type", Part::text("rotate-cw"))
         .part("image", Part::bytes(contents).file_name("test.jpg").mime_str("image/jpeg")?);
 
 
-    let _res = client.post("http://0.0.0.0:8000/upload")
+    let _res = client.post("http://0.0.0.0:8000/api")
         .multipart(form)
         .send()
         .await?
