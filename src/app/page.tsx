@@ -61,7 +61,7 @@ const Home = () => {
   return (
     <main className="py-20 flex flex-col justify-center items-center">
       {frames_data ? <SpinningAsciiImage frames={frames_data} /> : <>Loading...</>}
-      <UploadForm action={(formData) => setFormData(formData)}>
+      <UploadForm action={(data) => setFormData(data)}>
         <RectButton type="submit">Upload</RectButton>
       </UploadForm>
     </main>
