@@ -5,9 +5,8 @@ type Props = {
 }
 
 const UploadForm = ( props: Props ) => (
+
         <form 
-            method="POST"
-            encType="multipart/form-data"
             id="uploadForm"
             className={`m-5 flex flex-row justify-center items-center ${props.className}`}
             action={ props.action }
