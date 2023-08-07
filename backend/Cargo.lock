@@ -1088,6 +1088,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "middleware"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25f8a10686408d2d8e43be9b427c94f53eb9a10a0815726fcb6f7cc201c0069a"
+
+[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2122,6 +2128,7 @@ dependencies = [
  "axum",
  "axum_typed_multipart",
  "image",
+ "middleware",
  "reqwest",
  "serde",
  "serde_json",
@@ -2129,6 +2136,7 @@ dependencies = [
  "shuttle-runtime",
  "shuttle-static-folder",
  "tokio",
+ "tower",
  "tower-http",
  "tracing",
 ]
