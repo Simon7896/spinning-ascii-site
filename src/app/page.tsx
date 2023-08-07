@@ -26,6 +26,7 @@ const Home = () => {
         const res = await fetch("https://spinning-ascii.shuttleapp.rs/api", {
           method: "POST",
           headers: {
+            "Content-Type": "multipart/form-data",
           },
           body: formData,
           cache: "no-store",
