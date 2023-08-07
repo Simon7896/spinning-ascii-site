@@ -10,7 +10,7 @@ const Home = () => {
   const initialRender = useRef(true);
   const [isPending, startTransition] = useTransition();
   const [frames_data, setFramesData] = useState(json_data.frames);
-  const [formData, setFormData] = useState(new FormData(undefined));
+  const [formData, setFormData] = useState(new FormData());
 
   useEffect(() => {
     if (initialRender.current) {
