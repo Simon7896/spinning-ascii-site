@@ -5,7 +5,6 @@ type Props = {
 }
 
 const UploadForm = ( props: Props ) => (
-
         <form 
             method="POST"
             encType="multipart/form-data"
