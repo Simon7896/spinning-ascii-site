@@ -71,6 +71,7 @@ async fn axum(
             ServiceBuilder::new().layer(CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_origin([
+            "https://siomn7896.github.io".parse::<HeaderValue>().unwrap(),
             "https://simon7896.github.io/spinning-ascii-site".parse::<HeaderValue>().unwrap(),
             "http://localhost:3000".parse::<HeaderValue>().unwrap(),
         ])
