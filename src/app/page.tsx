@@ -5,7 +5,6 @@ import SpinningAsciiImage from './components/spinning_ascii_image'
 import UploadForm from './components/uploadForm';
 import RectButton from './components/rectButton';
 import json_data from './api/frames.json';
-import processImage from './action';
 
 const Home = () => {
   const initialRender = useRef(true);
@@ -20,13 +19,31 @@ const Home = () => {
     }
 
     startTransition(() => {
-      processImage(formData).then(
-        (json) => { 
+      async function fetchFrames(formData: FormData) {
+        if (!formData.has("image")) {
+          throw new Error("No image selected");
+        }
+        formData.append("animation_type", "rotate-cw");
+        const res = await fetch("https://spinning-ascii.shuttleapp.rs/api", {
+          method: "POST",
+          headers: {
+          },
+          body: formData,
+          cache: "no-store",
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch frames");
+        }
+        return await await res.json();
+      }
+
+      fetchFrames(formData).then(
+        (json) => {
           console.log("Returning fetched JSON!")
           setFramesData(json.frames);
         },
-        (reason) => { 
-          console.error(reason) 
+        (reason) => {
+          console.error(reason)
           console.log("Returning default JSON!");
         }
       )
@@ -43,8 +60,8 @@ const Home = () => {
 
   return (
     <main className="py-20 flex flex-col justify-center items-center">
-      {frames_data? <SpinningAsciiImage frames={frames_data}/> : <>Loading...</>}
-      <UploadForm action={ (formData) => setFormData(formData) }>
+      {frames_data ? <SpinningAsciiImage frames={frames_data} /> : <>Loading...</>}
+      <UploadForm action={(formData) => setFormData(formData)}>
         <RectButton type="submit">Upload</RectButton>
       </UploadForm>
     </main>
