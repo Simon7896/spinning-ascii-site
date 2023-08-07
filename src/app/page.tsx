@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useRef, useState, useTransition } from 'react';
-
 import SpinningAsciiImage from './components/spinning_ascii_image'
 import UploadForm from './components/uploadForm';
 import RectButton from './components/rectButton';
