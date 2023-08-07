@@ -1,16 +1,15 @@
 use std::path::PathBuf;
 
 use axum::{
-    routing::post,
-    routing::get_service, 
+    routing::post, 
     Router, 
     response::Json,
-    http::{StatusCode, Method, header::CONTENT_TYPE, HeaderValue}, 
+    http::StatusCode, 
     body::Bytes,
 };
 use axum_typed_multipart::{TryFromMultipart, TypedMultipart, FieldData};
-use tower_http::{services::ServeDir, cors::CorsLayer};
-use tower::ServiceBuilder;
+use axum::routing::get_service;
+use tower_http::services::ServeDir;
 use spinning_ascii::*;
 use tracing::info;
 
@@ -67,16 +66,6 @@ async fn axum(
     #[shuttle_static_folder::StaticFolder(folder = "assets")] static_folder: PathBuf,
 ) -> shuttle_axum::ShuttleAxum {
     let app = Router::new()
-        .layer(
-            ServiceBuilder::new().layer(CorsLayer::new()
-        .allow_methods([Method::GET, Method::POST])
-        .allow_origin([
-            "https://siomn7896.github.io".parse::<HeaderValue>().unwrap(),
-            "https://simon7896.github.io/spinning-ascii-site".parse::<HeaderValue>().unwrap(),
-            "http://localhost:3000".parse::<HeaderValue>().unwrap(),
-        ])
-        .allow_headers([CONTENT_TYPE]))
-        )
         .merge(routes_api())
         .fallback_service(routes_static(PathBuf::from(format!("{}/{}", static_folder.display(), "frames.json"))));
 

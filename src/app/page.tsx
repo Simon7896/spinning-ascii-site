@@ -1,15 +1,17 @@
 'use client'
 import { useEffect, useRef, useState, useTransition } from 'react';
+
 import SpinningAsciiImage from './components/spinning_ascii_image'
 import UploadForm from './components/uploadForm';
 import RectButton from './components/rectButton';
 import json_data from './api/frames.json';
+import processImage from './action';
 
 const Home = () => {
   const initialRender = useRef(true);
   const [isPending, startTransition] = useTransition();
   const [frames_data, setFramesData] = useState(json_data.frames);
-  const [formData, setFormData] = useState(new FormData());
+  const [formData, setFormData] = useState(new FormData(undefined));
 
   useEffect(() => {
     if (initialRender.current) {
@@ -18,32 +20,13 @@ const Home = () => {
     }
 
     startTransition(() => {
-      async function fetchFrames(formData: FormData) {
-        if (!formData.has("image")) {
-          throw new Error("No image selected");
-        }
-        formData.append("animation_type", "rotate-cw");
-        const res = await fetch("https://spinning-ascii.shuttleapp.rs/api", {
-          method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: formData,
-          cache: "no-store",
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch frames");
-        }
-        return await await res.json();
-      }
-
-      fetchFrames(formData).then(
-        (json) => {
+      processImage(formData).then(
+        (json) => { 
           console.log("Returning fetched JSON!")
           setFramesData(json.frames);
         },
-        (reason) => {
-          console.error(reason)
+        (reason) => { 
+          console.error(reason) 
           console.log("Returning default JSON!");
         }
       )
@@ -60,8 +43,8 @@ const Home = () => {
 
   return (
     <main className="py-20 flex flex-col justify-center items-center">
-      {frames_data ? <SpinningAsciiImage frames={frames_data} /> : <>Loading...</>}
-      <UploadForm action={(data) => setFormData(data)}>
+      {frames_data? <SpinningAsciiImage frames={frames_data}/> : <>Loading...</>}
+      <UploadForm action={ (formData) => setFormData(formData) }>
         <RectButton type="submit">Upload</RectButton>
       </UploadForm>
     </main>
